@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redes</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+</head>
+<body>
+    <main>
+        <div class="main-container">
+            <div class="container">
+                <h1>Conexión De Redes</h1>
+                <h2>Agregar Red</h2>
+                <input type="text" placeholder="Agregar Red" id="redes">
+                <button type="button" id="AddRed">Agregar</button>
+                <h2>Agregar Conexión</h2>
+                <input type="text" placeholder="Red Inicial" id="inicial">
+                <input type="text" placeholder="Red de Destino" id="destino">
+                <input type="text" placeholder="Velocidad" id="peso">
+                <button type="button" id="AddRed2">Agregar conexión</button>
+                <h2>Encontrar Ruta Más Rápida</h2>
+                <input type="text" placeholder="Red de Inicio para Dijkstra" id="inicioDijkstra">
+                <input type="text" placeholder="Red de Destino para Dijkstra" id="destinoDijkstra">
+                <button type="button" id="redMasRapida">Encontrar Ruta Más Rápida</button>
+            </div>
+            <div class="container2">
+                <button type="button" id="profundidad">Ver recorrido de profundidad</button>
+                <button type="button" id="anchura">Ver recorrido de anchura</button>
+                <div class="tablas-container">
+                    <div class="tabla-container">
+                        <table id="tablaProfundidad" class="tabla-recorrido">
+                            <caption>Recorrido en Profundidad</caption>
+                            <thead>
+                                <tr>
+                                    <th>Nodo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyProfundidad">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tabla-container">
+                        <table id="tablaAnchura" class="tabla-recorrido">
+                            <caption>Recorrido en Anchura</caption>
+                            <thead>
+                                <tr>
+                                    <th>Nodo</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyAnchura">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tabla-container">
+                        <table id="tablaDijkstra" class="tabla-recorrido">
+                            <caption>Ruta Más Rápida</caption>
+                            <thead>
+                                <tr>
+                                    <th>Distancia</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyDijkstra">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script type="module" src="./src/controllers/script.mjs"></script>
+</body>
+</html>
