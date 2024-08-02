@@ -116,9 +116,8 @@ btnRedMasRapida.addEventListener("click", () => {
     tbodyDijkstra.innerHTML = '';
 
     const inicioDijkstra = document.getElementById("inicioDijkstra").value.trim();
-    const destinoDijkstra = document.getElementById("destinoDijkstra").value.trim();
 
-    if (inicioDijkstra !== "" && destinoDijkstra !== "") {
+    if (inicioDijkstra !== "") {
         Swal.fire({
             title: 'Buscando la ruta más rápida',
             text: 'Por favor espere...',
@@ -129,30 +128,35 @@ btnRedMasRapida.addEventListener("click", () => {
         });
 
         setTimeout(() => {
-            const distance = graph.dijkstra(inicioDijkstra, destinoDijkstra);
-            if (distance !== Infinity) {
-                const row = document.createElement('tr');
-                const cellDistance = document.createElement('td');
-                cellDistance.textContent = distance;
-                row.appendChild(cellDistance);
-                tbodyDijkstra.appendChild(row);
+            const distances = graph.dijkstra(inicioDijkstra);
+            if (distances) {
+                for (let [node, distance] of Object.entries(distances)) {
+                    const row = document.createElement('tr');
+                    const cellNode = document.createElement('td');
+                    const cellDistance = document.createElement('td');
+                    cellNode.textContent = node;
+                    cellDistance.textContent = distance === Infinity ? 'Infinito' : distance;
+                    row.appendChild(cellNode);
+                    row.appendChild(cellDistance);
+                    tbodyDijkstra.appendChild(row);
+                }
 
                 Swal.fire({
                     icon: 'success',
-                    title: 'Ruta Más Rápida',
-                    text: `La distancia más rápida entre ${inicioDijkstra} y ${destinoDijkstra} es ${distance}`,
+                    title: 'Rutas Más Rápidas',
+                    text: `Se calcularon las distancias más rápidas desde ${inicioDijkstra}`,
                     confirmButtonColor: '#007bff'
                 });
             } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'No se encontró una ruta entre las redes especificadas',
+                    text: 'No se encontró una ruta desde la red especificada',
                     confirmButtonColor: '#007bff'
                 });
             }
         }, 1000);
     } else {
-        mostrarAlerta('error', 'Error', 'Debe ingresar ambas redes para encontrar la ruta más rápida');
+        mostrarAlerta('error', 'Error', 'Debe ingresar la red de inicio para encontrar las rutas más rápidas');
     }
 });

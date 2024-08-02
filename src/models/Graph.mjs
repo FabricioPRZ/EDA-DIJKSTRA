@@ -24,58 +24,59 @@ export default class Graph {
         return false;
     }
 
-    dijkstra(startVertex, endVertex) {
-        const inf = 1000000;
+    dijkstra(startVertex) {
+        const inf = Infinity;
         const numVertices = this.numVertices();
-        let D = [];   
-        let lPrima = [];
-        let L = []; 
-        let V = [];   
-    
-        for (let i = 0; i < numVertices; i++) {
-            D.push(inf);   
-            lPrima.push(i);    
-            V.push(i);     
-        }
+        let D = new Array(numVertices).fill(inf);  // Almacenar distancias mínimas
+        let lPrima = new Set([...this.#map.values()]); // Almacenar vertices no procesados
+        let L = new Set(); // Almacenar vertices procesados
     
         const start = this.#map.get(startVertex);
-        const end = this.#map.get(endVertex);
+        if (start === undefined) {
+            return null; // El vértice de inicio no está en el grafo
+        }
     
         D[start] = 0;
     
-        while (lPrima.length !== 0) {
+        while (lPrima.size > 0) {
             let u = null;
             let minDistance = inf;
-    
-            for (let i = 0; i < lPrima.length; i++) {
-                if (D[lPrima[i]] < minDistance) {
-                    minDistance = D[lPrima[i]];
-                    u = lPrima[i];
+            // Encuentra el vertice con la distancia minima
+            for (let vertex of lPrima) {
+                if (D[vertex] < minDistance) {
+                    minDistance = D[vertex];
+                    u = vertex;
                 }
             }
-    
+            // Si no se encuentra un vértice valido, se sale del bucle
             if (u === null) {
                 break;
             }
     
-            L.push(u);
-            lPrima = lPrima.filter(vertex => vertex !== u);
+            L.add(u);
+            lPrima.delete(u);
     
             const neighborsLinkedList = this.#matrizAdyacencia[u];
             let current = neighborsLinkedList.head;
-    
+            // Actualizar las distancias para los vecinos del vértice u
             while (current) {
                 const neighbor = this.#map.get(current.value.node);
                 const weight = current.value.weight;
-    
-                if (lPrima.includes(neighbor) && D[u] + weight < D[neighbor]) {
+                // Si el vecino está en lPrima y se encuentra una distancia más corta, se actualiza D
+                if (lPrima.has(neighbor) && D[u] + weight < D[neighbor]) {
                     D[neighbor] = D[u] + weight;
                 }
                 current = current.next;
             }
         }
     
-        return D[end];
+        // Crear un objeto para devolver los resultados de las distancias
+        const distances = {};
+        for (let [vertex, index] of this.#map) {
+            distances[vertex] = D[index];
+        }
+    
+        return distances;
     }
     
     dfs(startVertex, callback) {
